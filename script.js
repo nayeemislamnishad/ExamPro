@@ -24,11 +24,11 @@ for (let col = 0; col < columns; col++) {
         tableHTML += `
             <tr>
                 <td style="color:red;font-weight:550;">${qNum}</td>
-                <td>
-                    <span class="circle" data-q="${qNum}" data-ans="a">A</span>
-                    <span class="circle" data-q="${qNum}" data-ans="b">B</span>
-                    <span class="circle" data-q="${qNum}" data-ans="c">C</span>
-                    <span class="circle" data-q="${qNum}" data-ans="d">D</span>
+                <td style="padding:0px;margin:0px;padding-top:1px;padding-bottom:1px;">
+                    <span class="circle" data-q="${qNum}" data-ans="a" style="padding:0px;margin:0px;">A</span>
+                    <span class="circle" data-q="${qNum}" data-ans="b" style="padding:0px;margin:0px;">B</span>
+                    <span class="circle" data-q="${qNum}" data-ans="c" style="padding:0px;margin:0px;">C</span>
+                    <span class="circle" data-q="${qNum}" data-ans="d" style="padding:0px;margin:0px;">D</span>
                 </td>
             </tr>
         `;
