@@ -99,8 +99,8 @@ document.getElementById("submit-btn").addEventListener("click", function() {
     let youTotalAnswered=score+wrong;
 
     document.getElementById("result").innerHTML = `
-        <h2 id="examHeader">Exam Summary</h2>
-        <div style="text-align:left;margin-left:5%;border:1px solid green;padding:2%;border-radius:8px;background:rgba(78, 255, 8, 0.12);">
+        <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
+        <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
         <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
         <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
         <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
