@@ -55,8 +55,9 @@ body {
     border-radius: 50%;
     text-align: center;
     line-height: 22px;
-    margin: 0 5px;
+    margin: 0 1px;
     cursor: pointer;
+    padding: 0px;
 }
 
 .circle.selected {
