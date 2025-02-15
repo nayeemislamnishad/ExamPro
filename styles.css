@@ -176,3 +176,27 @@ body {
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
+
+#submit-btn {
+    background: linear-gradient(135deg, #a8d5ba 0%, #74c69d 100%);
+    font-size: 20px;
+    color: rgb(10, 26, 13);
+    border: none;
+    border-radius: 30px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#submit-btn:hover {
+    background: linear-gradient(135deg, #74c69d 0%, #a8d5ba 100%);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#submit-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
