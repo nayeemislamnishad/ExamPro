@@ -108,7 +108,7 @@ body {
     position: fixed;
     width: 80%;
     max-width: 400px;
-    top: 8px;
+    top: 3px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
