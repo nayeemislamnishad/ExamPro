@@ -94,20 +94,20 @@ body {
     font-family: inherit;
     font-weight: bolder;
     color: white;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 #timer {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
     background: cornflowerblue;
     color: white;
     border-radius: 5px;
-    padding: 5px;
+    padding: 8px;
         position: fixed;
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
-    top: 0;
+    top: 1;
 
 }
