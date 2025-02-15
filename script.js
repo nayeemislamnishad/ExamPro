@@ -116,7 +116,7 @@ document.getElementById("submit-btn").addEventListener("click", function() {
 });
 
 // let timeLeft = 3600;
-let timeLeft = 13;
+let timeLeft = 1300;
 const timerElement = document.getElementById("time");
 
 function updateTimer() {
