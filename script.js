@@ -130,7 +130,7 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
     document.getElementById("examHeader").style.display = "none";
 });
 
-let timeLeft = 1200;
+// let timeLeft = 1200;
 const timerElement = document.getElementById("time");
 
 function updateTimer() {
