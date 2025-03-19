@@ -85,15 +85,22 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
     });
 
 
-    
-    
-    for (let i = 0; i < totalQuestions; i++) {
-    let selectedCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"].selected`);
-    let correctAns = presetAnswers[i]; // আগে এটি ছিল ভুল
-    let correctCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"][data-ans="${correctAns}"]`);
+
+
+
+
+
+let score = 0, wrong = 0;
+let negativeMarking = 0;
+
+for (let i = 0; i < totalQuestions; i++) {
+    let qNum = i + startQuestionNumber;  // সঠিক প্রশ্ন নম্বর নির্ধারণ
+    let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
+    let correctAns = presetAnswers[i]; // `presetAnswers` 0-থেকে শুরু তাই `i` ব্যবহার করবো
+    let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
 
     if (selectedCircle) {
-        let chosenAns = userAnswers[i];
+        let chosenAns = userAnswers[i]; // এখানে `[i]` ব্যবহার করতে হবে
         if (chosenAns === correctAns) {
             selectedCircle.style.background = "green";
             selectedCircle.style.border = "1px solid green";
@@ -113,27 +120,53 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
     }
 }
 
+// নেগেটিভ মার্কিং গণনা
+negativeMarking = wrong * 0.25;
+let finalScore = score - negativeMarking;
+let totalAnswered = score + wrong;
 
+console.log("Total Questions:", totalQuestions);
+console.log("Correct Answers:", score);
+console.log("Wrong Answers:", wrong);
+console.log("Final Score:", finalScore);
+console.log("Total Answered:", totalAnswered);
+console.log("Negative Marking:", negativeMarking);
+
+// লিডারবোর্ড আপডেট করা
+document.getElementById("result").innerHTML = `
+    <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
+    <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
+    <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
+    <p>You Total answered:<strong style="color:red;font-size:16px;"> ${totalAnswered} / ${totalQuestions}</strong></p>
+    <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
+    <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
+    </div>
+`;
+    
 
 
     
     
-    negativeMarking = wrong * 0.25;
-    let finalScore = score - negativeMarking;
-    let youTotalAnswered = score + wrong;
     
-    document.getElementById("result").innerHTML = `
-        <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
-        <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
-        <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
-        <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
-        <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
-        <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
-        <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
-        <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
-        </div>
-    `;
+    
+    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     document.getElementById("submit-btn").style.display = "none";
     document.getElementById("timer").style.display = "none"; 
     document.getElementById("examHeader").style.display = "none";
