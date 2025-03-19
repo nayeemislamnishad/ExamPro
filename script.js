@@ -23,7 +23,8 @@ for (let col = 0; col < columns; col++) {
     let tableHTML = `<tr><th>Q No.</th><th>Answer</th></tr>`;
     
     for (let i = 0; i < questionsPerColumn; i++) {
-        let qNum = i + 1 + col * questionsPerColumn;
+        let qNum = i + startQuestionNumber + col * questionsPerColumn;
+        
         
         tableHTML += `
             <tr>
