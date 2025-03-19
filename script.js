@@ -116,7 +116,7 @@ negativeMarking = wrong * 0.25;
     let finalScore = score - negativeMarking;
     let youTotalAnswered = score + wrong;
     
-    document.getElementById("result").innerHTML = 
+    document.getElementById("result").innerHTML = ` 
         <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
         <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
         <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
@@ -126,7 +126,7 @@ negativeMarking = wrong * 0.25;
         <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
         <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
         </div>
-    ;
+    `;
 
     document.getElementById("submit-btn").style.display = "none";
     document.getElementById("timer").style.display = "none"; 
