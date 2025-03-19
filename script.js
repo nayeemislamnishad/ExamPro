@@ -1,6 +1,6 @@
 const presetAnswers = "acdacddaacdacddaacdacddaacdacddaacdacdda"; 
-const totalQuestions = 40;
-const columns = 2;
+const totalQuestions = 25;
+const columns = 1;
 const questionsPerColumn = totalQuestions / columns;
 const container = document.getElementById("answer-sheet");
 const tableContainer = document.createElement("div");
