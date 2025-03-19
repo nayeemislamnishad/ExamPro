@@ -85,7 +85,7 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
     });
 
 
-    /*
+    
 for (let i = 0; i < totalQuestions; i++) {
     let selectedCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"].selected`);
     let correctAns = presetAnswers[i]; // আগে এটি ছিল ভুল
@@ -133,65 +133,8 @@ negativeMarking = wrong * 0.25;
     document.getElementById("timer").style.display = "none"; 
     document.getElementById("examHeader").style.display = "none";
 });
-*/
 
-    let score = 0, wrong = 0, negativeMarking = 0;
-let totalAnswered = 0;
 
-for (let i = 0; i < totalQuestions; i++) {
-    let selectedCircle = document.querySelector(`.circle[data-q="${i + startQuestionNumber}"].selected`);
-    let correctAns = presetAnswers[i]; 
-    let correctCircle = document.querySelector(`.circle[data-q="${i + startQuestionNumber}"][data-ans="${correctAns}"]`);
-
-    if (selectedCircle) {
-        let chosenAns = userAnswers[i];
-        totalAnswered++; // ব্যবহারকারী উত্তর দিয়েছে
-
-        if (chosenAns === correctAns) {
-            score++;  // সঠিক উত্তর হলে স্কোর বাড়বে
-            selectedCircle.style.background = "green";
-            selectedCircle.style.border = "1px solid green";
-        } else {
-            wrong++;  // ভুল উত্তর হলে wrong বাড়বে
-            selectedCircle.style.background = "red";
-            selectedCircle.style.border = "1px solid red";
-
-            if (correctCircle) {
-                correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
-                correctCircle.style.border = "1px solid green";
-                correctCircle.style.color = "black";
-            }
-        }
-    } else {
-        if (correctCircle) {
-            correctCircle.style.border = "1px solid darkblue";
-            correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
-            correctCircle.style.color = "darkblue";
-        }
-    }
-}
-
-// ❌ ভুল: negativeMarking = wrong * 0.25;
-// ✅ ঠিক: 
-negativeMarking = parseFloat((wrong * 0.25).toFixed(2)); 
-
-let finalScore = parseFloat((score - negativeMarking).toFixed(2)); 
-
-document.getElementById("result").innerHTML = ` 
-    <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
-    <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
-        <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
-        <p>You Total answered:<strong style="color:red;font-size:16px;"> ${totalAnswered} / ${totalQuestions}</strong></p>
-        <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
-        <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking}</strong></p>
-        <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
-        <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
-    </div>
-`;
-
-document.getElementById("submit-btn").style.display = "none";
-document.getElementById("timer").style.display = "none"; 
-document.getElementById("examHeader").style.display = "none";
     
 
 
