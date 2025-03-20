@@ -75,15 +75,17 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
         return;
     }
     
-    let score = 0, wrong = 0;
+  //  let score = 0, wrong = 0;
     let endTime = new Date();
-    let negativeMarking = 0;
+   // let negativeMarking = 0;
     document.querySelectorAll(".circle").forEach(circle => {
         circle.style.pointerEvents = "none";
     });
 
 
+let score = 0, wrong = 0;
 
+    let negativeMarking = 0;
 for (let i = 0; i < totalQuestions; i++) {
     let selectedCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"].selected`);
     let correctAns = presetAnswers[i]; // আগে এটি ছিল ভুল
