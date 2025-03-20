@@ -91,6 +91,8 @@ for (let i = 0; i < totalQuestions; i++) {
     let correctAns = presetAnswers[i]; // আগে এটি ছিল ভুল
     let correctCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"][data-ans="${correctAns}"]`);
 
+
+    /*
     if (selectedCircle) {
         let chosenAns = userAnswers[i];
         if (chosenAns === correctAns) {
@@ -106,6 +108,24 @@ for (let i = 0; i < totalQuestions; i++) {
             if (correctCircle) correctCircle.style.color = "black";
             
         }
+    } */
+    if (selectedCircle) {
+    let chosenAns = userAnswers[i]; 
+    if (chosenAns === correctAns) {
+        selectedCircle.style.background = "green";
+        selectedCircle.style.border = "1px solid green";
+        score++;
+    } else {
+        if (!answered.has(i)) { // আগে না গুনলে তবেই wrong বাড়াও
+            wrong++;
+        }
+        selectedCircle.style.background = "red";
+        selectedCircle.style.border = "1px solid red";
+        if (correctCircle) correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
+        if (correctCircle) correctCircle.style.border = "1px solid green";
+        if (correctCircle) correctCircle.style.color = "black";
+    }
+    answered.add(i);  // ভুল না হলে সেটায় যোগ করো
     } else {
         if (correctCircle) correctCircle.style.border = "1px solid darkblue";
         if (correctCircle) correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
