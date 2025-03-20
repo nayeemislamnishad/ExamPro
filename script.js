@@ -1,4 +1,175 @@
+// Constants and Initialization
+const totalQuestions = 25;
+const columns = 1;
+let timeLeft = 1200;
 
+const presetAnswers = "cabbacdadbcbadbbacbababda"; // BAU= 7-8 Math
+const startQuestionNumber = 76; // এখান থেকে প্রশ্ন শুরু হবে
+
+const questionsPerColumn = Math.ceil(totalQuestions / columns);
+const container = document.getElementById("answer-sheet");
+const tableContainer = document.createElement("div");
+tableContainer.classList.add("table-container");
+
+let userAnswers = new Array(totalQuestions).fill(null); // Store user answers
+let answered = new Set(); // Track answered questions
+let startTime = new Date(); // Record start time
+
+// Warn user before refreshing the page
+window.onbeforeunload = function () {
+    return "আপনি কি নিশ্চিত যে আপনি পেজ রিফ্রেশ করতে চান? আপনার এক্সামের তথ্য হারিয়ে যেতে পারে।";
+};
+
+// Generate the answer sheet table
+const fragment = document.createDocumentFragment();
+
+for (let col = 0; col < columns; col++) {
+    const table = document.createElement("table");
+    table.classList.add("table");
+
+    let tableHTML = `<tr><th>Q No.</th><th>Answer</th></tr>`;
+
+    for (let i = 0; i < questionsPerColumn; i++) {
+        let qNum = i + startQuestionNumber + col * questionsPerColumn;
+
+        tableHTML += `
+            <tr>
+                <td style="color:red;font-weight:550;">${qNum}</td>
+                <td>
+                    <span class="circle" data-q="${qNum}" data-ans="a">A</span>
+                    <span class="circle" data-q="${qNum}" data-ans="b">B</span>
+                    <span class="circle" data-q="${qNum}" data-ans="c">C</span>
+                    <span class="circle" data-q="${qNum}" data-ans="d">D</span>
+                </td>
+            </tr>
+        `;
+    }
+
+    table.innerHTML = tableHTML;
+    fragment.appendChild(table);
+}
+
+tableContainer.appendChild(fragment);
+container.appendChild(tableContainer);
+
+// Add event listeners to answer circles
+document.querySelectorAll(".circle").forEach(circle => {
+    circle.addEventListener("click", function () {
+        const qNum = this.getAttribute("data-q");
+        const qNumIndex = qNum - startQuestionNumber; // Convert to zero-based index
+
+        if (answered.has(qNumIndex)) return; // Skip if already answered
+
+        const ans = this.getAttribute("data-ans");
+        userAnswers[qNumIndex] = ans; // Store user's answer
+        answered.add(qNumIndex); // Mark question as answered
+
+        // Highlight selected answer
+        this.parentElement.querySelectorAll(".circle").forEach(c => c.classList.remove("selected"));
+        this.classList.add("selected");
+        this.style.background = "black";
+        this.style.color = "white";
+    });
+});
+
+// Submit button logic
+document.getElementById("submit-btn").addEventListener("click", function (event) {
+    if (timeLeft > 0) {
+        let confirmSubmit = confirm("আপনি কি নিশ্চিত যে আপনি পরীক্ষাটি জমা দিতে চান?");
+        if (!confirmSubmit) {
+            event.preventDefault();
+            return;
+        }
+    }
+
+    let endTime = new Date(); // Record end time
+
+    // Disable further interaction with answer circles
+    document.querySelectorAll(".circle").forEach(circle => {
+        circle.style.pointerEvents = "none";
+    });
+
+    // Calculate score and wrong answers
+    let score = 0,
+        wrong = 0;
+    let negativeMarking = 0;
+
+    for (let i = 0; i < totalQuestions; i++) {
+        let qNum = i + startQuestionNumber;
+        let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
+        let correctAns = presetAnswers[i]; // Get correct answer from presetAnswers
+        let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
+
+        if (selectedCircle) {
+            let chosenAns = userAnswers[i];
+            if (chosenAns === correctAns) {
+                selectedCircle.style.background = "green";
+                selectedCircle.style.border = "1px solid green";
+                score++;
+            } else {
+                wrong++;
+                selectedCircle.style.background = "red";
+                selectedCircle.style.border = "1px solid red";
+                if (correctCircle) {
+                    correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
+                    correctCircle.style.border = "1px solid green";
+                    correctCircle.style.color = "black";
+                }
+            }
+        } else {
+            if (correctCircle) {
+                correctCircle.style.border = "1px solid darkblue";
+                correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
+                correctCircle.style.color = "darkblue";
+            }
+        }
+    }
+
+    // Calculate final score and display results
+    negativeMarking = wrong * 0.25;
+    let finalScore = score - negativeMarking;
+    let youTotalAnswered = score + wrong;
+
+    document.getElementById("result").innerHTML = `
+        <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
+        <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
+            <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
+            <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
+            <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
+            <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
+            <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
+            <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
+        </div>
+    `;
+
+    // Hide submit button and timer
+    document.getElementById("submit-btn").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.getElementById("examHeader").style.display = "none";
+});
+
+// Timer logic
+const timerElement = document.getElementById("time");
+
+function updateTimer() {
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+    timerElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    timeLeft--;
+
+    if (timeLeft < 0) {
+        window.onbeforeunload = null; // Disable refresh warning during auto-submit
+        document.getElementById("submit-btn").click();
+        clearInterval(timer);
+    }
+}
+
+const timer = setInterval(updateTimer, 1000);
+
+
+
+
+/*
 const questionsPerColumn = totalQuestions / columns;
 const container = document.getElementById("answer-sheet");
 const tableContainer = document.createElement("div");
@@ -161,3 +332,4 @@ function updateTimer() {
 const timer = setInterval(updateTimer, 1000);
 
 
+*/
