@@ -90,11 +90,15 @@
         <div id="answer-sheet"></div>
         <button id="submit-btn">Submit</button>
         <!-- Answer Input Box -->
+<!-- Answer Input Box (OMR Correction এর জন্য) -->
 <div id="answer-section" style="display:none; margin-top: 15px;">
-    <label for="userAnswers">Enter Correct Answers:</label>
-    <input type="text" id="userAnswers" placeholder="Enter like: accaddcabdc...">
-    <button id="initialize-btn" class="toggle-button">Initialize</button>
+    <div class="answer-box">
+        <h3>Enter Correct Answers</h3>
+        <input type="text" id="userAnswers" placeholder="Enter like: accaddcabdc...">
+        <button id="initialize-btn" class="toggle-button">Initialize</button>
+    </div>
 </div>
+
     </div>
     <script src="scriptmaster.js"></script>
     <script src="script.js"></script>
