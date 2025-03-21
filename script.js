@@ -82,18 +82,26 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
     });
 
 
-let score = 0, wrong = 0;
 
-    let negativeMarking = 0;
-for (let i = 0; i < totalQuestions; i++) {
-    let selectedCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"].selected`);
-    let correctAns = presetAnswers[i]; // আগে এটি ছিল ভুল
-    let correctCircle = document.querySelector(`.circle[data-q="${i+startQuestionNumber}"][data-ans="${correctAns}"]`);
+
+
 
 
     
+
+// Calculate score and wrong answers
+let score = 0,
+    wrong = 0;
+let negativeMarking = 0;
+
+for (let i = 0; i < totalQuestions; i++) {
+    let qNum = i + startQuestionNumber; // Get the actual question number
+    let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
+    let correctAns = presetAnswers[i]; // Get correct answer from presetAnswers
+    let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
+
     if (selectedCircle) {
-        let chosenAns = userAnswers[i];
+        let chosenAns = userAnswers[i]; // Use the zero-based index
         if (chosenAns === correctAns) {
             selectedCircle.style.background = "green";
             selectedCircle.style.border = "1px solid green";
@@ -102,21 +110,28 @@ for (let i = 0; i < totalQuestions; i++) {
             wrong++;
             selectedCircle.style.background = "red";
             selectedCircle.style.border = "1px solid red";
-            if (correctCircle) correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
-            if (correctCircle) correctCircle.style.border = "1px solid green";
-            if (correctCircle) correctCircle.style.color = "black";
-            
+            if (correctCircle) {
+                correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
+                correctCircle.style.border = "1px solid green";
+                correctCircle.style.color = "black";
+            }
         }
-    }  
-    
-    else {
-        if (correctCircle) correctCircle.style.border = "1px solid darkblue";
-        if (correctCircle) correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
-        if (correctCircle) correctCircle.style.color = "darkblue";
+    } else {
+        if (correctCircle) {
+            correctCircle.style.border = "1px solid darkblue";
+            correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
+            correctCircle.style.color = "darkblue";
+        }
     }
 }
     
 
+
+
+
+
+
+    
 negativeMarking = wrong * 0.25;
     let finalScore = score - negativeMarking;
     let youTotalAnswered = score + wrong;
