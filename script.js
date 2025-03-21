@@ -96,19 +96,25 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
 
 
     
-    // স্কোর এবং ভুল উত্তর গণনা করা
+    document.getElementById("initialize-btn").addEventListener("click", function () {
+    let userCorrectAnswers = document.getElementById("userAnswers").value.trim(); // User দেওয়া সঠিক উত্তর
+    
+    if (userCorrectAnswers.length !== totalQuestions) {
+        alert("আপনার দেওয়া উত্তর অবশ্যই " + totalQuestions + " অক্ষরের হতে হবে!");
+        return;
+    }
+
     let score = 0, wrong = 0;
     let negativeMarking = 0;
 
     for (let i = 0; i < totalQuestions; i++) {
-        let qNum = i + startQuestionNumber; // সঠিক প্রশ্ন নম্বর পাওয়া (76, 77, 78...)
-        let qNumIndex = i; // presetAnswers এর ইনডেক্স ঠিক করা
+        let qNum = i + startQuestionNumber;
         let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
-        let correctAns = presetAnswers[qNumIndex]; // সঠিক উত্তর পাওয়া
+        let correctAns = userCorrectAnswers[i]; // User দেওয়া সঠিক উত্তর
         let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
 
         if (selectedCircle) {
-            let chosenAns = userAnswers[qNumIndex]; 
+            let chosenAns = selectedCircle.getAttribute("data-ans");
             if (chosenAns === correctAns) {
                 selectedCircle.style.background = "green";
                 selectedCircle.style.border = "1px solid green";
@@ -132,28 +138,23 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
         }
     }
 
-    // ফাইনাল স্কোর গণনা করা
     negativeMarking = wrong * 0.25;
     let finalScore = score - negativeMarking;
-    let youTotalAnswered = score + wrong;
 
     document.getElementById("result").innerHTML = `
         <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
         <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
             <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
-            <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
             <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
             <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
-            <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
-            <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
         </div>
     `;
 
-    // সাবমিট করার পর বোতাম এবং টাইমার লুকিয়ে দেওয়া
-    document.getElementById("submit-btn").style.display = "none";
-    document.getElementById("timer").style.display = "none";
-    document.getElementById("examHeader").style.display = "none";
+    // **Initialize Button Disabled করা**
+    document.getElementById("initialize-btn").disabled = true;
+    document.getElementById("initialize-btn").style.background = "gray";
 });
+
 
     
 
