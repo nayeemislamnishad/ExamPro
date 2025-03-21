@@ -84,7 +84,6 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
 
 
 
-
 // Calculate score and wrong answers
 let score = 0,
     wrong = 0;
@@ -99,10 +98,12 @@ for (let i = 0; i < totalQuestions; i++) {
     if (selectedCircle) {
         let chosenAns = userAnswers[i]; // Use the zero-based index
         if (chosenAns === correctAns) {
+            // Correct answer
             selectedCircle.style.background = "green";
             selectedCircle.style.border = "1px solid green";
             score++;
         } else {
+            // Wrong answer
             wrong++;
             selectedCircle.style.background = "red";
             selectedCircle.style.border = "1px solid red";
@@ -138,7 +139,6 @@ document.getElementById("result").innerHTML = `
         <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
     </div>
 `;
-
     
 
 
