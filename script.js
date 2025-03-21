@@ -166,3 +166,49 @@ function updateTimer() {
 const timer = setInterval(updateTimer, 1000);
 
 
+
+const imageUpload = document.getElementById("imageUpload");
+const imagePreview = document.getElementById("imagePreview");
+const lockButton = document.getElementById("lockButton");
+
+let isLocked = false; // Lock button চাপা হয়েছে কিনা চেক করতে
+
+// User যখন ছবি আপলোড করবে
+imageUpload.addEventListener("change", function () {
+    if (isLocked) return; // যদি Lock করা থাকে, কিছুই হবে না
+
+    imagePreview.innerHTML = ""; // আগের সব ছবি মুছে দাও
+
+    const files = imageUpload.files; // ইউজার যে ফাইল আপলোড করেছে তা নেয়া
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.width = "200px";
+            img.style.height = "auto";
+            img.style.margin = "5px";
+            imagePreview.appendChild(img); // Image container-এ ইমেজ দেখানো
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+// Lock button event
+lockButton.addEventListener("click", function () {
+    if (imagePreview.children.length === 0) {
+        alert("Please upload at least one image before locking!");
+        return;
+    }
+
+    isLocked = true;
+    imageUpload.style.display = "none"; // Input box লুকিয়ে দাও
+    lockButton.style.background = "gray"; // Lock button disabled দেখানো
+    lockButton.innerText = "Images Locked"; // বাটনের টেক্সট পরিবর্তন করা
+    lockButton.disabled = true;
+});
+
+
