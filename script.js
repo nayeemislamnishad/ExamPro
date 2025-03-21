@@ -45,14 +45,19 @@ tableContainer.appendChild(fragment);
 container.appendChild(tableContainer);
 
 document.querySelectorAll(".circle").forEach(circle => {
-    circle.addEventListener("click", function() {
-        const qNum = this.getAttribute("data-q") - 1;
-        if (answered.has(qNum)) return;
+    circle.addEventListener("click", function () {
+        const qNum = this.getAttribute("data-q"); // প্রশ্ন নম্বর বের করা
+        const qNumIndex = parseInt(qNum) - startQuestionNumber; // 76 থেকে শুরু হওয়া প্রশ্নের জন্য সঠিক ইনডেক্স পাওয়া
+
+        if (qNumIndex < 0 || qNumIndex >= totalQuestions) return; // ভুল ইনডেক্স হলে কিছু করো না
+
+        if (answered.has(qNumIndex)) return; // যদি আগেই উত্তর দেওয়া থাকে, তাহলে কিছু করো না
 
         const ans = this.getAttribute("data-ans");
-        userAnswers[qNum] = ans;
-        answered.add(qNum);
+        userAnswers[qNumIndex] = ans; // ইউজারের উত্তর সংরক্ষণ করা
+        answered.add(qNumIndex); // প্রশ্নটাকে "answered" হিসেবে মার্ক করা
 
+        // UI তে সিলেক্ট করা উত্তর হাইলাইট করা
         this.parentElement.querySelectorAll(".circle").forEach(c => c.classList.remove("selected"));
         this.classList.add("selected");
         this.style.background = "black";
@@ -60,85 +65,82 @@ document.querySelectorAll(".circle").forEach(circle => {
     });
 });
 
-document.getElementById("submit-btn").addEventListener("click", function(event) {
-    if (timeLeft > 0) {  // Only ask for confirmation if time is not up
+
+document.getElementById("submit-btn").addEventListener("click", function (event) {
+    if (timeLeft > 0) {
         let confirmSubmit = confirm("আপনি কি নিশ্চিত যে আপনি পরীক্ষাটি জমা দিতে চান?");
         if (!confirmSubmit) {
             event.preventDefault();
             return;
         }
     }
-    let confirmSubmit = confirm("আপনি কি নিশ্চিত যে আপনি পরীক্ষাটি জমা দিতে চান?");
-    if (!confirmSubmit) {
-        event.preventDefault();
-        return;
-    }
-    
-  //  let score = 0, wrong = 0;
-    let endTime = new Date();
-   // let negativeMarking = 0;
+
+    let endTime = new Date(); // শেষ সময় রেকর্ড করা
+
+    // উত্তর দেওয়া বন্ধ করা
     document.querySelectorAll(".circle").forEach(circle => {
         circle.style.pointerEvents = "none";
     });
 
+    // স্কোর এবং ভুল উত্তর গণনা করা
+    let score = 0, wrong = 0;
+    let negativeMarking = 0;
 
+    for (let i = 0; i < totalQuestions; i++) {
+        let qNum = i + startQuestionNumber; // সঠিক প্রশ্ন নম্বর পাওয়া (76, 77, 78...)
+        let qNumIndex = i; // presetAnswers এর ইনডেক্স ঠিক করা
+        let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
+        let correctAns = presetAnswers[qNumIndex]; // সঠিক উত্তর পাওয়া
+        let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
 
-
-// Calculate score and wrong answers
-let score = 0,
-    wrong = 0;
-let negativeMarking = 0;
-
-for (let i = 0; i < totalQuestions; i++) {
-    let qNum = i + startQuestionNumber; // Get the actual question number
-    let selectedCircle = document.querySelector(`.circle[data-q="${qNum}"].selected`);
-    let correctAns = presetAnswers[i]; // Get correct answer from presetAnswers
-    let correctCircle = document.querySelector(`.circle[data-q="${qNum}"][data-ans="${correctAns}"]`);
-
-    if (selectedCircle) {
-        let chosenAns = userAnswers[i]; // Use the zero-based index
-        if (chosenAns === correctAns) {
-            // Correct answer
-            selectedCircle.style.background = "green";
-            selectedCircle.style.border = "1px solid green";
-            score++;
+        if (selectedCircle) {
+            let chosenAns = userAnswers[qNumIndex]; 
+            if (chosenAns === correctAns) {
+                selectedCircle.style.background = "green";
+                selectedCircle.style.border = "1px solid green";
+                score++;
+            } else {
+                wrong++;
+                selectedCircle.style.background = "red";
+                selectedCircle.style.border = "1px solid red";
+                if (correctCircle) {
+                    correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
+                    correctCircle.style.border = "1px solid green";
+                    correctCircle.style.color = "black";
+                }
+            }
         } else {
-            // Wrong answer
-            wrong++;
-            selectedCircle.style.background = "red";
-            selectedCircle.style.border = "1px solid red";
             if (correctCircle) {
-                correctCircle.style.background = "rgba(104, 255, 99, 0.33)";
-                correctCircle.style.border = "1px solid green";
-                correctCircle.style.color = "black";
+                correctCircle.style.border = "1px solid darkblue";
+                correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
+                correctCircle.style.color = "darkblue";
             }
         }
-    } else {
-        // Unanswered question: Do not count as wrong
-        if (correctCircle) {
-            correctCircle.style.border = "1px solid darkblue";
-            correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
-            correctCircle.style.color = "darkblue";
-        }
     }
-}
 
-// Calculate final score and display results
-negativeMarking = wrong * 0.25; // Apply negative marking only for wrong answers
-let finalScore = score - negativeMarking;
-let youTotalAnswered = score + wrong;
+    // ফাইনাল স্কোর গণনা করা
+    negativeMarking = wrong * 0.25;
+    let finalScore = score - negativeMarking;
+    let youTotalAnswered = score + wrong;
 
-document.getElementById("result").innerHTML = `
-    <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
-    <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
-        <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
-        <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
-        <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
-        <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
-        <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
-        <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
-    </div>
-`;
+    document.getElementById("result").innerHTML = `
+        <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
+        <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
+            <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
+            <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
+            <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
+            <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
+            <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
+            <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
+        </div>
+    `;
+
+    // সাবমিট করার পর বোতাম এবং টাইমার লুকিয়ে দেওয়া
+    document.getElementById("submit-btn").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.getElementById("examHeader").style.display = "none";
+});
+
     
 
 
