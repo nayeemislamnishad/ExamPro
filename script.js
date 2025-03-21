@@ -185,13 +185,17 @@ imageUpload.addEventListener("change", function () {
         const reader = new FileReader();
 
         reader.onload = function (e) {
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.style.width = "200px";
-            img.style.height = "auto";
-            img.style.margin = "5px";
-            imagePreview.appendChild(img); // Image container-এ ইমেজ দেখানো
-        };
+    const img = document.createElement("img");
+    img.src = e.target.result;
+    
+    // Image size বড় করে দেওয়া (তোমার আগের design-এর মতো)
+    img.style.width = "200%";
+    img.style.height = "200%";
+    
+    img.style.margin = "5px";
+    imagePreview.appendChild(img);
+};
+
 
         reader.readAsDataURL(file);
     }
