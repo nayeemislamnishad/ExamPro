@@ -85,10 +85,6 @@ document.getElementById("submit-btn").addEventListener("click", function(event) 
 
 
 
-
-
-    
-
 // Calculate score and wrong answers
 let score = 0,
     wrong = 0;
@@ -117,6 +113,7 @@ for (let i = 0; i < totalQuestions; i++) {
             }
         }
     } else {
+        // Unanswered question: Do not count as wrong
         if (correctCircle) {
             correctCircle.style.border = "1px solid darkblue";
             correctCircle.style.backgroundColor = "rgba(206, 206, 206, 0.88)";
@@ -124,34 +121,25 @@ for (let i = 0; i < totalQuestions; i++) {
         }
     }
 }
-    
 
+// Calculate final score and display results
+negativeMarking = wrong * 0.25; // Apply negative marking only for wrong answers
+let finalScore = score - negativeMarking;
+let youTotalAnswered = score + wrong;
 
-
-
-
-
-    
-negativeMarking = wrong * 0.25;
-    let finalScore = score - negativeMarking;
-    let youTotalAnswered = score + wrong;
-    
-    document.getElementById("result").innerHTML = ` 
-        <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
-        <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
+document.getElementById("result").innerHTML = `
+    <h2 id="examHeader" style="color:darkgreen;">Exam Summary</h2>
+    <div style="text-align:left;border:1px solid green;padding:2%;border-radius:7px;background:rgb(75 255 4 / 5%);">
         <p>You Obtained:<strong style="color:red;"> ${finalScore} / ${totalQuestions}</strong></p>
         <p>You Total answered:<strong style="color:red;font-size:16px;"> ${youTotalAnswered} / ${totalQuestions}</strong></p>
         <p>Total Wrong: <strong style="color:red;font-size:16px;"> ${wrong}</strong></p>
         <p>Total Negative Marking:<strong style="color:red;font-size:16px;"> ${negativeMarking.toFixed(2)}</strong></p>
         <p>Exam Starting Time:<strong style="color:red;font-size:16px;"> ${startTime.toLocaleTimeString()}</strong></p>
         <p>Exam Finish Time:<strong style="color:red;font-size:16px;"> ${endTime.toLocaleTimeString()}</strong></p>
-        </div>
-    `;
+    </div>
+`;
 
-    document.getElementById("submit-btn").style.display = "none";
-    document.getElementById("timer").style.display = "none"; 
-    document.getElementById("examHeader").style.display = "none";
-});
+    
 
 
     
