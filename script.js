@@ -153,6 +153,8 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
     // **Initialize Button Disabled করা**
     document.getElementById("initialize-btn").disabled = true;
     document.getElementById("initialize-btn").style.background = "gray";
+    document.getElementById("answer-section").style.display="none";
+    document.getElementById("nitialize-btn").style.display="none";
 });
 
 
