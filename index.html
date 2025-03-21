@@ -74,12 +74,18 @@
         
         <button id="toggleButton" class="toggle-button" onclick="toggleBox()">Show Question Paper</button>
         
-        <div id="imageBox" class="image-container">
-            <img src="photo1.jpg" alt="Large Image">
-            <img src="photo2.jpg" alt="Large Image">
-            <img src="photo3.jpg" alt="Large Image">
-    
-        </div>
+        
+
+        <button id="toggleButton" class="toggle-button" onclick="toggleBox()">Show Question Paper</button>
+
+<!-- Image Upload Section -->
+<input type="file" id="imageUpload" accept="image/*" multiple>
+<button id="lockButton" class="toggle-button">Lock Images</button>
+
+<!-- Image Container -->
+<div id="imageBox" class="image-container">
+    <div id="imagePreview"></div>
+</div>
         
         
         <div id="answer-sheet"></div>
