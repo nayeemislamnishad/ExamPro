@@ -103,6 +103,10 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
         alert("আপনার দেওয়া উত্তর অবশ্যই " + totalQuestions + " অক্ষরের হতে হবে!");
         return;
     }
+    if (!/^[abcd]+$/.test(userCorrectAnswers)) {
+        alert("শুধুমাত্র a, b, c, d ব্যবহার করতে পারবেন! অন্য কোনো অক্ষর দেওয়া যাবে না।");
+        return;
+    }
 
     let score = 0, wrong = 0;
     let negativeMarking = 0;
