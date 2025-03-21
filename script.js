@@ -75,13 +75,27 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
         }
     }
 
-    let endTime = new Date(); // শেষ সময় রেকর্ড করা
+    let endTime = new Date();
 
-    // উত্তর দেওয়া বন্ধ করা
+    // **OMR Lock করা (User আর Answer Select করতে পারবে না)**
     document.querySelectorAll(".circle").forEach(circle => {
-        circle.style.pointerEvents = "none";
+        circle.style.pointerEvents = "none";  // Lock OMR
     });
 
+    // **Answer Input Box & Initialize Button দেখানো**
+    document.getElementById("answer-section").style.display = "block";
+
+    // **Submit Button Hide করা**
+    document.getElementById("submit-btn").style.display = "none";
+});
+
+
+
+
+
+
+
+    
     // স্কোর এবং ভুল উত্তর গণনা করা
     let score = 0, wrong = 0;
     let negativeMarking = 0;
