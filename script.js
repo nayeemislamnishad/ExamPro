@@ -234,3 +234,6 @@ lockButton.addEventListener("click", function () {
 });
 
 
+document.getElementById("userAnswers").addEventListener("input", function () {
+    this.value = this.value.toLowerCase(); // সব অক্ষর ছোট করে ফেলা
+});
