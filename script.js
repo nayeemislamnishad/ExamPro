@@ -76,6 +76,9 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
     }
 
     let endTime = new Date();
+    // ✅ **Timer বন্ধ করা**
+    clearInterval(timer); // Timer বন্ধ করবে
+    document.getElementById("timer").innerText = "Exam Finished!"; // Timer Text চেঞ্জ
 
     // **OMR Lock করা (User আর Answer Select করতে পারবে না)**
     document.querySelectorAll(".circle").forEach(circle => {
