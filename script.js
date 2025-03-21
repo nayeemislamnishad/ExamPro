@@ -107,6 +107,11 @@ document.getElementById("submit-btn").addEventListener("click", function (event)
         alert("শুধুমাত্র a, b, c, d ব্যবহার করতে পারবেন! অন্য কোনো অক্ষর দেওয়া যাবে না।");
         return;
     }
+    // ✅ Check 3: **Final Confirmation**
+    let confirmInitialize = confirm("আপনি কি নিশ্চিত যে আপনি মার্কিং শুরু করতে চান?");
+    if (!confirmInitialize) {
+        return; // ইউজার 'Cancel' চাপলে কিছুই হবে না
+    }
 
     let score = 0, wrong = 0;
     let negativeMarking = 0;
