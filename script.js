@@ -213,6 +213,7 @@ lockButton.addEventListener("click", function () {
     lockButton.style.background = "gray"; // Lock button disabled দেখানো
     lockButton.innerText = "Images Locked"; // বাটনের টেক্সট পরিবর্তন করা
     lockButton.disabled = true;
+    lockButton.style.display = "none";
 });
 
 
